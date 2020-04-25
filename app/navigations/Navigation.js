@@ -1,3 +1,4 @@
+// REACT NAVIGATION V4
 import React from 'react';
 import { Icon } from 'react-native-elements';
 
