@@ -5,13 +5,9 @@ import { YellowBox } from 'react-native';
 import _ from 'lodash';
 
 // TODO: LIMPIAR TERMINAL DE LOG INNECESARIOS SETTING A TIMER
-YellowBox.ignoreWarnings([
-  'Setting a timer',
-  /* 'Warning: componentWillMount is deprecated',
-  'Warning: componentWillReceiveProps is deprecated',
-  'Warning: componentWillReceiveProps has been renamed',
-  'Module RCTImageLoader requires', */
-]);
+YellowBox.ignoreWarnings(['Setting a timer']);
+// YellowBox.ignoreWarnings(['componentWillReceiveProps']);
+// YellowBox.ignoreWarnings(['componentWillMount']);
 const _console = _.clone(console);
 console.warn = message => {
   if (message.indexOf('Setting a timer') <= -1) {
