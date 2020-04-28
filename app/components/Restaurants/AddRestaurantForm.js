@@ -24,11 +24,17 @@ export default function AddRestaurantForm(props) {
     const [restaurantName, setRestaurantName] = useState('');
     const [restaurantAddress, setRestaurantAddress] = useState('');
     const [restaurantDescription, setRestaurantDescription] = useState('');
+    const [restaurantPhone, setRestaurantPhone] = useState('');
+    const [restaurantEmail, setRestaurantEmail] = useState('');
     const [isVisibleMap, setIsVisibleMap] = useState(false);
     const [locationRestaurant, setLocationRestaurant] = useState(null);
 
     const addRestaurant = () => {
-        if (!restaurantName || !restaurantAddress || !restaurantDescription) {
+        if (!restaurantName ||
+            !restaurantAddress ||
+            !restaurantDescription ||
+            !restaurantPhone ||
+            !restaurantEmail) {
             toastRef.current.show('Todos los campos del formulario son obliogatorios');
         } else if(imagesSelected.length === 0) {
             toastRef.current.show('El restaurante tiene que tener al menos una foto');
@@ -44,6 +50,8 @@ export default function AddRestaurantForm(props) {
                     name: restaurantName,
                     address: restaurantAddress,
                     description: restaurantDescription,
+                    phone: restaurantPhone,
+                    email: restaurantEmail,
                     location: locationRestaurant,
                     images: arrayImages,
                     rating: 0,
@@ -95,6 +103,8 @@ export default function AddRestaurantForm(props) {
                 setRestaurantName={setRestaurantName}
                 setRestaurantAddress={setRestaurantAddress}
                 setRestaurantDescription={setRestaurantDescription}
+                setRestaurantPhone={setRestaurantPhone}
+                setRestaurantEmail={setRestaurantEmail}
                 setIsVisibleMap={setIsVisibleMap}
                 locationRestaurant={locationRestaurant}
             />
@@ -205,7 +215,7 @@ function UploadImage(props) {
 }
 
 function FormAdd(props) {
-    const { setRestaurantName, setRestaurantAddress, setRestaurantDescription, setIsVisibleMap, locationRestaurant } = props;
+    const { setRestaurantName, setRestaurantAddress, setRestaurantDescription, setRestaurantPhone, setRestaurantEmail, setIsVisibleMap, locationRestaurant } = props;
 
     return (
         <View style={styles.viewForm}>
@@ -231,6 +241,16 @@ function FormAdd(props) {
                 multiline
                 inputContainerStyle={styles.textArea}
                 onChange={(e) => setRestaurantDescription(e.nativeEvent.text)}
+            />
+            <Input
+                placeholder="Telefono del restaurante"
+                containerStyle={styles.input}
+                onChange={(e) => setRestaurantPhone(e.nativeEvent.text)}
+            />
+            <Input
+                placeholder="Email del restaurante"
+                containerStyle={styles.input}
+                onChange={(e) => setRestaurantEmail(e.nativeEvent.text)}
             />
         </View>
     );

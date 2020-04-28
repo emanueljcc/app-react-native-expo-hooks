@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Dimensions } from 'react-native';
+import { Rating, ListItem } from 'react-native-elements';
 import CarouselImages from '../../components/Carousel';
+import Map from '../../components/Map';
+import ListReviews from '../../components/Restaurants/ListReviews';
 import * as firebase from 'firebase';
 
 const screenWidth = Dimensions.get('window').width;
@@ -32,13 +35,130 @@ export default function Restaurant(props) {
     }, [])
 
     return (
-        <View>
+        <ScrollView style={styles.viewBody}>
             <CarouselImages
                 arrayImages={imageRestaurant}
                 width={screenWidth}
                 height={250}
             />
-            <Text>{ item.address }</Text>
+            <TitleRestaurant
+                name={item.name}
+                description={item.description}
+                rating={item.rating}
+            />
+            <RestaurantInfo
+                location={item.location}
+                name={item.name}
+                address={item.address}
+                phone={item.phone}
+                email={item.email}
+            />
+            <ListReviews
+                navigation={navigation}
+                idRestaurant={item.id}
+            />
+        </ScrollView>
+    );
+}
+
+function TitleRestaurant(props) {
+    const { name, description, rating } = props;
+
+    return (
+        <View style={styles.viewRestaurantTitle}>
+            <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.nameRestaurant}>{name}</Text>
+                <Rating
+                    style={styles.rating}
+                    imageSize={20}
+                    readonly
+                    startingValue={parseFloat(rating)}
+                />
+            </View>
+            <Text style={styles.descriptionRestaurant}>{description}</Text>
         </View>
     );
 }
+
+function RestaurantInfo(props) {
+    const { location, name, address, phone, email } = props;
+
+    const listInfo = [
+        {
+            text: address,
+            iconName: 'map-marker',
+            iconType: "material-community",
+            action: null
+        },
+        {
+            text: phone ? phone : ' - ',
+            iconName: 'phone',
+            iconType: 'material-community',
+            action: null
+        },
+        {
+            text: email ? email : ' - ',
+            iconName: 'at',
+            iconType: 'material-community',
+            action: null
+        }
+    ]
+
+    return (
+        <View style={styles.viewRestaurantInfo}>
+            <Text style={styles.restaurantInfoTitle}>Informacion sobre el restaurante</Text>
+            <Map
+                location={location}
+                name={name}
+                height={100}
+            />
+            {listInfo.map((item, i) => (
+                <ListItem
+                    key={i}
+                    title={item.text}
+                    leftIcon={{
+                        name: item.iconName,
+                        type: item.iconType,
+                        color: '#00a680',
+                    }}
+                    containerStyle={styles.containerListItem}
+                />
+            ))}
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    viewBody: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    viewRestaurantTitle: {
+        margin: 15,
+    },
+    nameRestaurant: {
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    rating: {
+        position: 'absolute',
+        right: 0,
+    },
+    descriptionRestaurant: {
+        marginTop: 5,
+        color: 'gray',
+    },
+    viewRestaurantInfo: {
+        marginTop: 15,
+        marginTop: 25,
+    },
+    restaurantInfoTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    containerListItem: {
+        borderBottomColor: '#d8d8d8',
+        borderBottomWidth: 1,
+    }
+});
