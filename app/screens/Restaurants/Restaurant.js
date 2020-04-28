@@ -9,11 +9,12 @@ import * as firebase from 'firebase';
 const screenWidth = Dimensions.get('window').width;
 
 export default function Restaurant(props) {
-    const { navigation } = props
+    const { navigation } = props;
 
     const item = navigation.state.params.restaurant.item.restaurant ? navigation.state.params.restaurant.item.restaurant : navigation.state.params.restaurant.item;
 
     const [imageRestaurant, setImageRestaurant] = useState([]);
+    const [rating, setRating] = useState(item.rating);
 
     useEffect(() => {
         const arrayUrls = [];
@@ -44,7 +45,7 @@ export default function Restaurant(props) {
             <TitleRestaurant
                 name={item.name}
                 description={item.description}
-                rating={item.rating}
+                rating={rating}
             />
             <RestaurantInfo
                 location={item.location}
@@ -56,6 +57,7 @@ export default function Restaurant(props) {
             <ListReviews
                 navigation={navigation}
                 idRestaurant={item.id}
+                setRating={setRating}
             />
         </ScrollView>
     );
